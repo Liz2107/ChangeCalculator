@@ -1,24 +1,39 @@
 import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 import java.util.ArrayList;
+
 public class Converter {
 static int cost;
 static int amountPaid;
-static ArrayList<Double> coins = new ArrayList<Double>();
-	public static void main(String[] args) {
-		//read in values
+static ArrayList<String> currencies = new ArrayList<String>();
+
+	public static void main(String[] args) throws IOException
+	{
+		getCoinValues();
 		gatherInfo();
+		
 
 	}
-	public static void getCoinValues()
+	public static void getCoinValues() throws IOException
 	{
-		//Scanner file = new Scanner(coinValues.txt);
-		
+		Scanner file = new Scanner(new File("coinValues.txt"));
+		while(file.hasNext())
+		{
+			currencies.add(file.nextLine());
+			//file.next();
+		}
 				
 	}
 	public static void gatherInfo()
 	{
-		System.out.println("Double check that all values are recorded in subunits. Enter values in 'units.subunits'");
-		System.out.println("For example, if the item costs $4.31, enter 4.31.");
+		System.out.println("Currency Options: ");
+		int counter = 1;
+		for(String s : currencies)
+		{
+			System.out.println(counter + ". " + s);
+			counter++;
+		}
 		Scanner costIn = new Scanner(System.in);
 		System.out.println("Cost: ");
 		double cost = costIn.nextDouble();
