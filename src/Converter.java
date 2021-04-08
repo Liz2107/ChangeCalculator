@@ -15,14 +15,31 @@ static ArrayList<String> currencies = new ArrayList<String>();
 		
 
 	}
+	public static int getFileLines() throws IOException
+	{
+		int lineCount = 0;
+		Scanner f = new Scanner(new File("coinValues.txt"));
+		while(f.hasNext())
+		{
+			lineCount++;
+		}
+		return lineCount;
+	}
 	public static void getCoinValues() throws IOException
 	{
+		int counter = 0;
+		
+		int[][] coinValues = new int[8][getFileLines() / 2];
 		Scanner file = new Scanner(new File("coinValues.txt"));
 		while(file.hasNext())
 		{
 			currencies.add(file.nextLine());
-			//file.next();
+			String[] temp = file.nextLine().split(" ");
+			for(int j = 0; j < temp.length; j++)
+				coinValues[counter][j] = Integer.parseInt(temp[counter]);
+			counter++;
 		}
+		//System.out.println(coinValues);
 				
 	}
 	public static void gatherInfo()
