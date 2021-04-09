@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Converter {
 static int cost;
+static int preservedCost;
 static int amountPaid;
 static String currencyChoice;
 static int currencyVal;
@@ -16,25 +17,36 @@ static ArrayList<String> currencies = new ArrayList<String>();
 		getCoinValues();
 		gatherInfo();
 		calculateChange();
-
+		//printTests();
 	}
 	
+	public static void printTests()
+	{
+		System.out.println(cost + " " + amountPaid);
+		System.out.println(currencyChoice);
+		System.out.println(currencyVal);
+		for(int i = 0; i < currencies.size(); i++)
+			System.out.println(currencies.get(i));
+		for(int j = 0; j < coinValues.length; j++)
+			for(int k = 0; k < coinValues[0].length; k++)
+				System.out.println(coinValues[j][k]);
+	}
 	public static void calculateChange()
 	{
 		int[] numCoinsReq = {0, 0, 0, 0, 0, 0, 0, 0};
 		for(int i = 7; i >= 0; i--)
 		{
-			while(!(amountPaid + coinValues[currencyVal - 1][i] <= cost))
-			{
-				if(amountPaid + coinValues[currencyVal - 1][i] <= cost)
-				{
-					amountPaid += coinValues[currencyVal - 1][i];
+			while(cost + coinValues[currencyVal - 1][i] <= amountPaid)
+			{					
+					cost += coinValues[currencyVal - 1][i];
 					numCoinsReq[i] ++;
-				}
 			}
 		}
+		
+		System.out.println("Change: " + (amountPaid - preservedCost));
+		System.out.println("Most efficient distribution: ");
 		for(int j = 0; j < numCoinsReq.length; j++)
-			System.out.println((j + 1) + ": " + numCoinsReq[j]);
+			System.out.println((coinValues[currencyVal - 1][j]) + ": " + numCoinsReq[j]);
 		
 		
 	}
@@ -61,7 +73,7 @@ static ArrayList<String> currencies = new ArrayList<String>();
 			currencies.add(file.nextLine());
 			String[] temp = file.nextLine().split(" ");
 			for(int j = 0; j < temp.length; j++)
-				coinValues[counter][j] = Integer.parseInt(temp[counter]);
+				coinValues[counter][j] = Integer.parseInt(temp[j]);
 			counter++;
 		}
 		
@@ -81,10 +93,11 @@ static ArrayList<String> currencies = new ArrayList<String>();
 		currencyChoice = currencies.get(currencyVal - 1);
 		Scanner costIn = new Scanner(System.in);
 		System.out.println("Cost: ");
-		int cost = costIn.nextInt();
+		cost = costIn.nextInt();
+		preservedCost = cost;
 		Scanner amountPaidIn = new Scanner(System.in);
 		System.out.println("Amount Paid: ");
-		int amountPaid = amountPaidIn.nextInt();
+		amountPaid = amountPaidIn.nextInt();
 		
 	}
 
